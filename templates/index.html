@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RawMusic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Arial, sans-serif;
+    background: #fff;
+    color: #111;
+    padding: 18px 16px 110px;
+}
+
+h1 {
+    margin: 0 0 16px 0;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.topbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: none;
+    padding: 10px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 14px;
+    background: #111;
+    color: white;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:active {
+    transform: scale(0.97);
+    opacity: 0.7;
+}
+
+button.secondary {
+    background: #f2f2f7;
+    color: #111;
+}
+
+button.like {
+    background: #ff2d55;
+    color: white;
+}
+
+.search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+input {
+    flex: 1;
+    padding: 12px 13px;
+    border-radius: 14px;
+    border: 1px solid #e5e5ea;
+    font-size: 15px;
+    background: #fff;
+    outline: none;
+}
+
+.track {
+    background: #f6f6f8;
+    border-radius: 18px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.track-card {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.track-cover {
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: #ddd;
+    flex-shrink: 0;
+}
+
+.track-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 4px;
+    word-break: break-word;
+}
+
+.track-subtitle {
+    font-size: 12px;
+    color: #7a7a80;
+    margin-bottom: 8px;
+}
+
+.actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.actions button {
+    font-size: 12px;
+    padding: 8px 10px;
+    border-radius: 12px;
+}
+
+.empty {
+    color: #8e8e93;
+    padding: 12px 4px;
+}
+
+.section-title {
+    margin: 20px 0 10px 0;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+#miniPlayer {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    padding: 12px;
+    display: none;
+}
+
+#miniTop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#miniCover {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    object-fit: cover;
+    background: #ddd;
+    flex-shrink: 0;
+}
+
+#miniMeta {
+    flex: 1;
+    min-width: 0;
+}
+
+#miniTitle {
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#miniArtist {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#miniButtons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 12px;
+    background: #f2f2f7;
+    color: #111;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+}
+
+#playerScreen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f8fa 100%);
+    z-index: 999;
+    display: none;
+    overflow: auto;
+    padding: 18px 16px 24px;
+}
+
+#playerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#closePlayer {
+    background: #f2f2f7;
+    color: #111;
+}
+
+#playerCenter {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#playerCover {
+    width: 280px;
+    height: 280px;
+    max-width: 82vw;
+    max-height: 82vw;
+    border-radius: 28px;
+    object-fit: cover;
+    background: #ddd;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+#playerTitle {
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+#playerArtist {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #7a7a80;
+}
+
+#playerControls {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    width: 100%;
+    max-width: 420px;
+}
+
+#playerControls button {
+    flex: 1;
+    padding: 14px 0;
+    border-radius: 18px;
+    font-size: 18px;
+}
+
+#playerControls .main {
+    background: #111;
+    color: white;
+}
+
+#playerControls .soft {
+    background: #f2f2f7;
+    color: #111;
+}
+
+#libraryBlock {
+    margin-top: 24px;
+}
+
+#libraryList .track {
+    margin-top: 8px;
+}
+
+#hiddenPlayer {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#ytFrame {
+    width: 0;
+    height: 0;
+    border: 0;
+}
+</style>
+</head>
+<body>
+
+<h1>🎵 RawMusic</h1>
+
+<div class="topbar">
+    <button onclick="showSearch()">Search</button>
+    <button class="secondary" onclick="showFavorites()">Liked</button>
+</div>
+
+<div class="search-row">
+    <input id="searchInput" placeholder="Например: Jah Khalib SnD" />
+    <button onclick="searchTracks()">Search</button>
+</div>
+
+<div id="results">
+    <div class="empty">Введите запрос и нажми Search</div>
+</div>
+
+<div id="miniPlayer">
+    <div id="miniTop">
+        <img id="miniCover" src="" alt="cover">
+        <div id="miniMeta" onclick="openPlayerScreen()" style="cursor:pointer;">
+            <div id="miniTitle">Nothing playing</div>
+            <div id="miniArtist">RawMusic</div>
+        </div>
+        <div id="miniButtons">
+            <button class="icon-btn" onclick="toggleLikeCurrent()">♥</button>
+            <button class="icon-btn" onclick="togglePlayPause()">⏯</button>
+        </div>
+    </div>
+</div>
+
+<div id="playerScreen">
+    <div id="playerHeader">
+        <button id="closePlayer" onclick="closePlayerScreen()">Close</button>
+    </div>
+
+    <div id="playerCenter">
+        <img id="playerCover" src="" alt="cover">
+        <div id="playerTitle">Nothing playing</div>
+        <div id="playerArtist">RawMusic</div>
+
+        <div id="playerControls">
+            <button class="soft" onclick="toggleLikeCurrent()">♥</button>
+            <button class="soft" onclick="prevTrack()">⏮</button>
+            <button class="main" onclick="togglePlayPause()">⏯</button>
+            <button class="soft" onclick="nextTrack()">⏭</button>
+        </div>
+    </div>
+
+    <div id="libraryBlock">
+        <div class="section-title">Saved tracks</div>
+        <div id="libraryList">
+            <div class="empty">Пусто</div>
+        </div>
+    </div>
+</div>
+
+<div id="hiddenPlayer">
+    <div id="ytFrame"></div>
+</div>
+
+<script>
+let currentTrack = null;
+let currentResults = [];
+let currentIndex = -1;
+let player = null;
+let ytReady = false;
+let isPlaying = false;
+let favoriteTracks = [];
+
+function loadYouTubeAPI() {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+}
+
+function onYouTubeIframeAPIReady() {
+    ytReady = true;
+}
+window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+
+function showSearch() {
+    document.getElementById("results").innerHTML = `<div class="empty">Введите запрос и нажми Search</div>`;
+}
+
+async function searchTracks() {
+    const q = document.getElementById("searchInput").value.trim();
+    const results = document.getElementById("results");
+
+    if (!q) {
+        results.innerHTML = "<div class='empty'>Введите запрос</div>";
+        return;
+    }
+
+    results.innerHTML = "<div class='empty'>Ищу...</div>";
+
+    const res = await fetch("/search?q=" + encodeURIComponent(q));
+    const data = await res.json();
+
+    currentResults = data;
+    currentIndex = -1;
+
+    let html = "";
+
+    data.forEach((track, i) => {
+        html += `
+        <div class="track">
+            <div class="track-card">
+                <img class="track-cover" src="${track.cover_url || ''}">
+                <div class="track-info">
+                    <div class="track-title">${track.title}</div>
+                    <div class="track-subtitle">${track.artist || "YouTube"}</div>
+                    <div class="actions">
+                        <button onclick='playTrackByIndex(${i})'>Play</button>
+                        <button class="like" onclick='likeTrack(${JSON.stringify(track).replace(/"/g, "&quot;")})'>♥</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    results.innerHTML = html || "<div class='empty'>Ничего не найдено</div>";
+}
+
+function ensurePlayer(videoId) {
+    if (!ytReady) {
+        alert("Плеер YouTube ещё загружается");
+        return;
+    }
+
+    if (!player) {
+        player = new YT.Player("ytFrame", {
+            height: "0",
+            width: "0",
+            videoId: videoId,
+            playerVars: {
+                autoplay: 1,
+                controls: 0,
+                rel: 0,
+                modestbranding: 1
+            },
+            events: {
+                onStateChange: onPlayerStateChange
+            }
+        });
+    } else {
+        player.loadVideoById(videoId);
+    }
+}
+
+function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+        isPlaying = true;
+    } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+        isPlaying = false;
+    }
+
+    if (event.data === YT.PlayerState.ENDED) {
+        nextTrack();
+    }
+}
+
+function playTrackByIndex(index) {
+    currentIndex = index;
+    playTrack(currentResults[index]);
+}
+
+function playTrack(track) {
+    currentTrack = track;
+
+    document.getElementById("miniPlayer").style.display = "block";
+    document.getElementById("miniCover").src = track.cover_url || "";
+    document.getElementById("miniTitle").innerText = track.title || "Unknown";
+    document.getElementById("miniArtist").innerText = track.artist || "YouTube";
+
+    document.getElementById("playerCover").src = track.cover_url || "";
+    document.getElementById("playerTitle").innerText = track.title || "Unknown";
+    document.getElementById("playerArtist").innerText = track.artist || "YouTube";
+
+    ensurePlayer(track.video_id);
+}
+
+function togglePlayPause() {
+    if (!player) return;
+
+    const state = player.getPlayerState();
+    if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+        isPlaying = false;
+    } else {
+        player.playVideo();
+        isPlaying = true;
+    }
+}
+
+function nextTrack() {
+    if (!currentResults.length) return;
+    if (currentIndex + 1 < currentResults.length) {
+        currentIndex += 1;
+        playTrack(currentResults[currentIndex]);
+    }
+}
+
+function prevTrack() {
+    if (!currentResults.length) return;
+    if (currentIndex - 1 >= 0) {
+        currentIndex -= 1;
+        playTrack(currentResults[currentIndex]);
+    }
+}
+
+function openPlayerScreen() {
+    if (!currentTrack) return;
+    document.getElementById("playerScreen").style.display = "block";
+    renderLibraryList();
+}
+
+function closePlayerScreen() {
+    document.getElementById("playerScreen").style.display = "none";
+}
+
+async function likeTrack(track) {
+    await fetch("/favorite/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ track })
+    });
+    await loadFavorites();
+    renderLibraryList();
+}
+
+async function toggleLikeCurrent() {
+    if (!currentTrack) return;
+
+    await fetch("/favorite/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ track: currentTrack })
+    });
+
+    await loadFavorites();
+    renderLibraryList();
+}
+
+async function loadFavorites() {
+    const res = await fetch("/favorites");
+    favoriteTracks = await res.json();
+}
+
+function renderLibraryList() {
+    const wrap = document.getElementById("libraryList");
+
+    if (!favoriteTracks.length) {
+        wrap.innerHTML = `<div class="empty">Пусто</div>`;
+        return;
+    }
+
+    let html = "";
+    favoriteTracks.forEach((track, i) => {
+        html += `
+        <div class="track">
+            <div class="track-card">
+                <img class="track-cover" src="${track.cover_url || ''}">
+                <div class="track-info">
+                    <div class="track-title">${track.title}</div>
+                    <div class="track-subtitle">${track.artist || "YouTube"}</div>
+                    <div class="actions">
+                        <button onclick='playFavorite(${i})'>Play</button>
+                        <button class="secondary" onclick='removeFav(${i})'>Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    wrap.innerHTML = html;
+}
+
+function playFavorite(index) {
+    currentResults = favoriteTracks.slice();
+    currentIndex = index;
+    playTrack(favoriteTracks[index]);
+}
+
+async function removeFav(i) {
+    await fetch("/favorite/remove", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ index: i })
+    });
+
+    await loadFavorites();
+    renderLibraryList();
+}
+
+async function showFavorites() {
+    await loadFavorites();
+
+    let html = `<div class="section-title">❤️ Liked</div>`;
+
+    favoriteTracks.forEach((track, i) => {
+        html += `
+        <div class="track">
+            <div class="track-card">
+                <img class="track-cover" src="${track.cover_url || ''}">
+                <div class="track-info">
+                    <div class="track-title">${track.title}</div>
+                    <div class="track-subtitle">${track.artist || "YouTube"}</div>
+                    <div class="actions">
+                        <button onclick='playFavorite(${i})'>Play</button>
+                        <button class="secondary" onclick='removeFav(${i})'>Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    if (!favoriteTracks.length) html += `<div class="empty">Пусто</div>`;
+
+    document.getElementById("results").innerHTML = html;
+}
+
+loadYouTubeAPI();
+loadFavorites();
+showSearch();
+</script>
+
+</body>
+</html>

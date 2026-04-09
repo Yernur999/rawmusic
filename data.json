@@ -1,0 +1,93 @@
+{
+  "406444634": {
+    "gym": [],
+    "era": []
+  },
+  "playlists": {
+    "406444634": {
+      "Gym": [
+        {
+          "title": "Drake - Not You Too (Audio) ft. Chris Brown",
+          "url": "https://youtube.com/watch?v=ZX_mvoY_Hg0"
+        }
+      ]
+    }
+  },
+  "pending": {
+    "406444634": {
+      "1": {
+        "title": "Drake - Not You Too (Audio) ft. Chris Brown",
+        "url": "https://youtube.com/watch?v=ZX_mvoY_Hg0"
+      },
+      "2": {
+        "title": "DRAKE - WHAT DID I MISS",
+        "url": "https://youtube.com/watch?v=weU76DGHKU0"
+      },
+      "3": {
+        "title": "Drake - NOKIA (Official Music Video)",
+        "url": "https://youtube.com/watch?v=8ekJMC8OtGU"
+      }
+    }
+  },
+  "create_mode": {
+    "406444634": false
+  },
+  "era": [],
+  "favorites": [
+    {
+      "artist": "MUSIC LOKI",
+      "cover_url": "https://i.ytimg.com/vi/a6pl5fYC0EM/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "Всё что мы любим - без матов  (Snd) Jah Khalib",
+      "video_id": "a6pl5fYC0EM"
+    },
+    {
+      "artist": "디아블로",
+      "cover_url": "https://i.ytimg.com/vi/MsWDwIpoNlI/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "[SND] 디아블로 II: 레저렉션 | 디아블로 30주년 기념 에피소드!",
+      "video_id": "MsWDwIpoNlI"
+    },
+    {
+      "artist": "YouTube",
+      "cover_url": "https://i.ytimg.com/vi/xQze4jqK8RQ/hqdefault.jpg",
+      "title": "Jah Khalib - SnD (Всё, что мы любим)",
+      "video_id": "xQze4jqK8RQ"
+    },
+    {
+      "artist": "SQWOZ BAB - Topic",
+      "cover_url": "https://i.ytimg.com/vi/s5Et7q6oK5Y/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "КУПЕР",
+      "video_id": "s5Et7q6oK5Y"
+    },
+    {
+      "artist": "Skryptonite",
+      "cover_url": "https://i.ytimg.com/vi/pRn05UWBXBY/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "Скриптонит - не расслабляйся [аудио 2024]",
+      "video_id": "pRn05UWBXBY"
+    },
+    {
+      "artist": "Skryptonite - Topic",
+      "cover_url": "https://i.ytimg.com/vi/nkncpcanly0/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "Положение",
+      "video_id": "nkncpcanly0"
+    },
+    {
+      "artist": "Skryptonite - Topic",
+      "cover_url": "https://i.ytimg.com/vi/nlaAW0yOAnI/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "Трата времени",
+      "video_id": "nlaAW0yOAnI"
+    },
+    {
+      "artist": "Skryptonite - Topic",
+      "cover_url": "https://i.ytimg.com/vi/qdBQJzyAtbc/hqdefault.jpg",
+      "source": "YouTube",
+      "title": "Локоны",
+      "video_id": "qdBQJzyAtbc"
+    }
+  ]
+}
