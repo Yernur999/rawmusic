@@ -4,7 +4,9 @@ import requests
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
-
+@app.route('/telegram')
+def telegram():
+    return render_template('index.html')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 @app.route("/")
